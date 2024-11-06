@@ -8,7 +8,6 @@ environment:
 
 dependencies:
   animate_do: ^3.3.4
-  
   card_swiper: ^3.0.1
   dio: ^5.7.0
   flutter:
@@ -19,14 +18,19 @@ dependencies:
   intl: ^0.19.0
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
+  path_provider: ^2.1.5
+  
   
 
 dev_dependencies:
+  analyzer: ^5.13.0
+  
   build_runner: ^2.4.13
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
   isar_generator: ^3.1.0+1
+ 
 
 flutter:
   uses-material-design: true

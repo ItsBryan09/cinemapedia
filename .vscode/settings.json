@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/home/bryan/flutter_udemy/cinemapedia/linux"
+    "cmake.sourceDirectory": "/home/bryan/flutter_udemy/cinemapedia/linux",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
