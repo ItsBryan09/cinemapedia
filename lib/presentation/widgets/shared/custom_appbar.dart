@@ -1,10 +1,11 @@
-import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:cinemapedia/domain/entitis/movie.dart';
 
 import 'package:cinemapedia/presentation/delegates/search_movie_delegate.dart';
+import 'package:cinemapedia/presentation/providers/providers.dart';
 
 class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});
@@ -36,7 +37,6 @@ class CustomAppbar extends ConsumerWidget {
               const Spacer(),
               IconButton(
                   onPressed: () {
-                    //TODO:
                     final searchedMovies = ref.read(searchedMoviesProvider);
                     final searchQuery = ref.read(searchQueryProvider);
 

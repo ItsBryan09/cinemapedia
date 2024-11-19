@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:cinemapedia/presentation/widgets/widgets.dart';
 import 'package:cinemapedia/presentation/providers/providers.dart';
+import 'package:cinemapedia/presentation/widgets/widgets.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -11,34 +11,34 @@ class HomeView extends ConsumerStatefulWidget {
   HomeViewState createState() => HomeViewState();
 }
 
-class HomeViewState extends ConsumerState<HomeView> {
+class HomeViewState extends ConsumerState<HomeView>
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
 
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
     ref.read(popularMoviesProvider.notifier).loadNextPage();
-    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
-    final initialLoading = ref.watch(initialLoadingProvider);
+    super.build(context);
 
+    final initialLoading = ref.watch(initialLoadingProvider);
     if (initialLoading) return const FullScreenLoader();
 
-    final slideshowMovies = ref.watch(moviesSlideshowPrivider);
+    final slideShowMovies = ref.watch(moviesSlideshowPrivider);
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-    final popularMovies = ref.watch(popularMoviesProvider);
-    final upcomingMovies = ref.watch(upcomingMoviesProvider);
     final topRatedMovies = ref.watch(topRatedMoviesProvider);
+    final upcomingMovies = ref.watch(upcomingMoviesProvider);
 
     return CustomScrollView(slivers: [
       const SliverAppBar(
         floating: true,
         flexibleSpace: FlexibleSpaceBar(
-          centerTitle: true,
           title: CustomAppbar(),
         ),
       ),
@@ -48,46 +48,44 @@ class HomeViewState extends ConsumerState<HomeView> {
           children: [
             // const CustomAppbar(),
 
-            MoviesSlideshow(movies: slideshowMovies),
+            MoviesSlideshow(movies: slideShowMovies),
 
             MovieHorizontalListview(
-              movie: nowPlayingMovies,
-              title: 'En cine',
-              subTitle: 'Lunes 20',
-              loadNextPage: () {
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-              },
-            ),
+                movies: nowPlayingMovies,
+                title: 'En cines',
+                subTitle: 'Lunes 20',
+                loadNextPage: () =>
+                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage()),
+
             MovieHorizontalListview(
-              movie: upcomingMovies,
-              title: 'Proximamente',
-              subTitle: 'En este mes',
-              loadNextPage: () {
-                ref.read(upcomingMoviesProvider.notifier).loadNextPage();
-              },
-            ),
+                movies: upcomingMovies,
+                title: 'Próximamente',
+                subTitle: 'En este mes',
+                loadNextPage: () =>
+                    ref.read(upcomingMoviesProvider.notifier).loadNextPage()),
+
+            //* Ya no estará aquí, ahora es parte del menú inferior
+            // MovieHorizontalListview(
+            //   movies: popularMovies,
+            //   title: 'Populares',
+            //   // subTitle: '',
+            //   loadNextPage: () =>ref.read(popularMoviesProvider.notifier).loadNextPage()
+            // ),
+
             MovieHorizontalListview(
-              movie: popularMovies,
-              title: 'Populares',
-              //subTitle: 'En este mes',
-              loadNextPage: () {
-                ref.read(popularMoviesProvider.notifier).loadNextPage();
-              },
-            ),
-            MovieHorizontalListview(
-              movie: topRatedMovies,
-              title: 'Mejor calificadas',
-              //subTitle: 'Desde siempre',
-              loadNextPage: () {
-                ref.read(topRatedMoviesProvider.notifier).loadNextPage();
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            )
+                movies: topRatedMovies,
+                title: 'Mejor calificadas',
+                //subTitle: '',
+                loadNextPage: () =>
+                    ref.read(topRatedMoviesProvider.notifier).loadNextPage()),
+
+            const SizedBox(height: 10),
           ],
         );
-      }, childCount: 1))
+      }, childCount: 1)),
     ]);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

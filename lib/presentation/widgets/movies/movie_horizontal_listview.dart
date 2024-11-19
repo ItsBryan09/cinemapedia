@@ -1,18 +1,18 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia/config/helpers/human_formats.dart';
-import 'package:cinemapedia/domain/entitis/movie.dart';
+import 'package:cinemapedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:cinemapedia/domain/entitis/movie.dart';
 import 'package:go_router/go_router.dart';
 
 class MovieHorizontalListview extends StatefulWidget {
-  final List<Movie> movie;
+  final List<Movie> movies;
   final String? title;
   final String? subTitle;
   final VoidCallback? loadNextPage;
 
   const MovieHorizontalListview(
       {super.key,
-      required this.movie,
+      required this.movies,
       this.title,
       this.subTitle,
       this.loadNextPage});
@@ -56,11 +56,11 @@ class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
           Expanded(
               child: ListView.builder(
             controller: scrollController,
-            itemCount: widget.movie.length,
+            itemCount: widget.movies.length,
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              return FadeInRight(child: _Slide(movie: widget.movie[index]));
+              return FadeInRight(child: _Slide(movie: widget.movies[index]));
             },
           ))
         ],
@@ -82,7 +82,7 @@ class _Slide extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //Todo: eston es la imagen
+          //Todo: esto es la imagen
           SizedBox(
             width: 150,
             child: ClipRRect(
@@ -124,29 +124,7 @@ class _Slide extends StatelessWidget {
             ),
           ),
           //Todo Ratting
-          Row(
-            children: [
-              Icon(
-                Icons.star_half_outlined,
-                color: Colors.yellow.shade600,
-              ),
-              const SizedBox(
-                width: 3,
-              ),
-              Text(
-                '${movie.voteAverage}',
-                style: textStyles.bodyMedium
-                    ?.copyWith(color: Colors.yellow.shade600),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                HumanFormats.number(movie.popularity),
-                style: textStyles.bodySmall,
-              )
-            ],
-          )
+          MovieRating(voteAverage: movie.voteAverage)
         ],
       ),
     );
@@ -162,6 +140,7 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.titleLarge;
+
     return Container(
       padding: const EdgeInsets.only(top: 10),
       margin: const EdgeInsets.symmetric(horizontal: 10),
